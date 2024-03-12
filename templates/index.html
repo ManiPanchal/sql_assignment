@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Questionnaire</title>
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #f4f4f4;
+}
+
+.container {
+    max-width: 600px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+    text-align: center;
+}
+
+.question {
+    margin-bottom: 20px;
+}
+
+.options label {
+    
+    margin-bottom: 10px;
+}
+
+button {
+    display: block;
+    margin: 0 auto;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+button:hover {
+    background-color: #0056b3;
+}
+</style>
+<script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+<script>
+    let data=[],p_id,ele=[];
+    window.addEventListener('load',load);
+    async function load(){
+        // console.log('inside')
+        try {
+        const response = await fetch("http://127.0.0.1:5000/fetchfirst", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            // body: JSON.stringify({id: selectValue})
+        });
+        if (response.ok) {
+             data = await response.json();
+            // console.log(data);
+            // console.log('inside')
+
+            createquestion(data)
+
+        }
+            else{
+               swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+            }
+       
+    }
+    catch(e){
+        swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+    }
+    }
+   function createquestion(d){
+    let container=document.getElementsByClassName('container');
+    container[0].innerHTML = "";
+    // console.log('inside')
+    //   console.log(d[0])
+
+      let questionElement = document.createElement("p");
+    questionElement.textContent = d[0].q_text;
+    questionElement.classList.add("question");
+    questionElement.id=d[0].q_id;
+    p_id=d[0].q_id;
+    container[0].appendChild(questionElement);
+   
+    var formElement = document.createElement("form");
+    formElement.classList.add("options");
+    container[0].appendChild(formElement);
+    
+    // Create radio buttons for each option
+    for (var i = 0; i < d.length; i++) {
+        var optionId = d[i].opt_id;
+        var optionValue = d[i].option_text;
+        
+        var inputElement = document.createElement("input");
+        inputElement.setAttribute("type", "radio");
+        inputElement.setAttribute("id", optionId);
+        inputElement.setAttribute("name", "option");
+        inputElement.setAttribute("value", optionValue);
+        
+        var labelElement = document.createElement("label");
+        labelElement.setAttribute("for", optionId);
+        labelElement.textContent = optionValue;
+        
+        formElement.appendChild(inputElement);
+        formElement.appendChild(labelElement);
+        formElement.appendChild(document.createElement("br"));
+       
+        
+    }
+    var submitButton = document.createElement("button");
+    submitButton.setAttribute("type", "button");
+    submitButton.textContent = "Next";
+    submitButton.addEventListener("click", submitAnswer);
+    formElement.appendChild(submitButton);
+}  
+async function submitAnswer() {
+    let container=document.getElementsByClassName('container')
+    container[0].innerhtml="";
+    let selectedOption = document.querySelector('input[name="option"]:checked');
+    
+    if (!selectedOption) {
+        swal({
+            title:'Please select an option',
+            icon:'warning'});
+        return;
+    }
+    else{
+        // console.log(selectedOption)
+    ele.push(selectedOption.value)
+        // console.log(selectedOption.id,p_id)
+        if(p_id==6){
+            try {
+                ele.push(Date.now())
+        const response = await fetch("http://127.0.0.1:5000/response", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({data:ele})
+        });
+        if (response.ok) {
+            let container = document.getElementsByClassName('container')[0]; // Get the container element
+container.innerHTML = ""; 
+
+
+let gender = ele[0];
+let category = ele[1];
+let cloth = ele[2];
+let color = ele[3];
+let size = ele[4];
+
+
+let htmlContent = "<h1>Your Survey is complete</h1>";
+htmlContent += "<p><b>Gender:</b> " + gender + "</p>";
+htmlContent += "<p><b>Category:</b> " + category + "</p>";
+htmlContent += "<p><b>Cloth: </b>" + cloth + "</p>";
+htmlContent += "<p><b>Color:</b> " + color + "</p>";
+htmlContent += "<p><b>Size: </b>" + size + "</p>";
+
+
+container.innerHTML = htmlContent;
+
+
+        }
+            else{
+               swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+            }
+       
+    }
+    catch(e){
+        swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+    }
+            
+
+        }
+        else{
+        try {
+        const response = await fetch("http://127.0.0.1:5000/fetchnext", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({q_id: p_id,opt_id:selectedOption.id})
+        });
+        if (response.ok) {
+             data = await response.json();
+            // console.log(data);
+            // console.log('inside')
+            createquestion(data)
+
+        }
+            else{
+               swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+            }
+       
+    }
+    catch(e){
+        swal({
+                title:'Something went wrong',
+                icon:'warning'
+               })
+    }
+}
+    }
+
+    
+}
+
+
+</script>
+</head>
+<body>
+
+</body>
+</html>
+
+</script>
+</head>
+<body>
+    <h1>Question</h1>
+<div class="container">
+    
+    
+</div>
+</body>
+</html>
