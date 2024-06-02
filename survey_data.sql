@@ -33,9 +33,9 @@ CREATE TABLE `response` (
   `size` varchar(10) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
-INSERT INTO opt_ion(q_id,option_text,opt_id) VALUES('1','\'Male\'','1'),('1','\'Female\'','2'),('2','\'Winter Wear\'','1'),('2','\'Summer Wear\'','2'),('3','\'T-shirt\'','1'),('3','\'cap\'','2'),('3','\'Shirt\'','3'),('3','\'Jeans\'','4'),('4','\'Black\'','1'),('4','\'White\'','2'),('4','\'Blue\'','3'),('4','\'Brown\'','4'),('5','\'Jacket\'','1'),('5','\'Long coat\'','2'),('5','\'Hoodies\'','3'),('5','\'Woolen cap\'','4'),('6','\'S\'','1'),('6','\'M\'','2'),('6','\'L\'','3'),('6','\'XL\'','4');
+INSERT INTO opt_ion(q_id,option_text,opt_id) VALUES('1','Male','1'),('1','Female','2'),('2','Winter Wear','1'),('2','Summer Wear','2'),('3','T-shirt','1'),('3','cap','2'),('3','Shirt','3'),('3','Jeans','4'),('4','Black','1'),('4','White','2'),('4','Blue','3'),('4','Brown','4'),('5','Jacket','1'),('5','Long coat','2'),('5','Hoodies','3'),('5','Woolen cap','4'),('6','S','1'),('6','M','2'),('6','L','3'),('6','XL','4');
 
-INSERT INTO question(q_id,q_text) VALUES('1','\'What is Your Gender?\''),('2','\'What you want to wear?\''),('3','\'What you want to  buy?\''),('4','\'Which color?\''),('5','\'What To want?\''),('6','\'Select Size\'');
+INSERT INTO question(q_id,q_text) VALUES('1','What is Your Gender?'),('2','What you want to wear?'),('3','What you want to  buy?'),('4','Which color?'),('5','What To want?'),('6','Select Size');
 
 INSERT INTO relation(q_id,opt_id,next_ques) VALUES('1','1','2'),('1','2','2'),('2','2','3'),('2','1','5'),('3','1','4'),('5','1','4'),('5','2','4'),('5','3','4'),('5','4','4'),('4','1','6'),('4','2','6'),('4','3','6'),('4','4','6'),('3','2','4'),('3','3','4'),('3','4','4');
-INSERT INTO response(user_id,gender,category,cloth,color,size) VALUES('\'1710262539691\'','\'Male\'','\'Summer Wear\'','\'T-shirt\'','\'Blue\'','\'M\'');
+INSERT INTO response(user_id,gender,category,cloth,color,size) VALUES('1710262539691','Male','Summer Wear','T-shirt','Blue','M');
